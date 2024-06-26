@@ -1,11 +1,15 @@
 <template lang="html">
     <div class="mainBlog">
-        <hr>
-        <button @click="pobierzWpisy">Pobierz wpisy</button>
-        <h2>Siema Blog!</h2>
-        {{ wpisy }}
-        <input v-model="nowyBlog" type="text">
-        <button @click="dodajWpisy">Dodaj</button>
+        <h2 class="text-blue-600">Wpisy na bloga:</h2>
+        <div class="w-100 flex flex-row-reverse">
+            <button @click="pobierzWpisy" class="border-solid border-2 border-blue-600 rounded px-4 py-2">Refresh</button>
+        </div>
+        <div v-for="wpis in wpisy" class="flex flex-col gap-10 drop-shadow-x1 my-8">
+            <p class="bg-blue-600 text-white py-4 px-4 rounded">{{ wpis }}</p>
+        </div>
+        <label for="post">Dodaj post</label>
+        <input v-model="nowyBlog" name="post" id="post" type="text" class="border-solid border-2 border-blue-600 rounded mx-4">
+        <button @click="dodajWpisy" class="border-solid border-2 border-blue-600 rounded px-4 py-0">Dodaj</button>
     </div>
 </template>
 <script>
@@ -25,20 +29,9 @@ export default {
         async pobierzWpisy(){
             this.wpisy = await dzien2_backend.odczytaj_wpisy();
         }
+    },
+    async mounted(){
+        this.pobierzWpisy()
     }
 }
 </script>
-<style lang="scss">
-    hr{
-        width: calc(25vw + 10%);
-        color: #582785;
-    }
-
-    .mainBlog{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        gap: 2rem;
-    }
-</style>
