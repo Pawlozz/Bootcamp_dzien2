@@ -5,7 +5,7 @@
             <button @click="pobierzWpisy" class="border-solid border-2 border-blue-600 rounded px-4 py-2">Refresh</button>
         </div>
         <div v-for="wpis in wpisy" class="flex flex-col gap-10 drop-shadow-x1 my-8">
-            <p class="bg-blue-600 text-white py-4 px-4 rounded">{{ wpis }}</p>
+            <p class="bg-blue-600 text-white py-4 px-8 rounded">{{ wpis }}</p>
         </div>
         <label for="post">Dodaj post</label>
         <input v-model="nowyBlog" name="post" id="post" type="text" class="border-solid border-2 border-blue-600 rounded mx-4">
