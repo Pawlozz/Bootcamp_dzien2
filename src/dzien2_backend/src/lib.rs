@@ -1,4 +1,5 @@
-use std::cell::{Ref, RefCell, RefMut};
+use core::panic;
+use std::{cell::{Ref, RefCell, RefMut}, ffi::c_long};
 
 thread_local! {
     static WPISY: RefCell<Vec<String>> = RefCell::default();
@@ -10,11 +11,17 @@ fn greet(name: String, numb: i8) -> String {
 }
 
 #[ic_cdk::update]
-fn dodaj_wpis(wpis: String){
-    WPISY.with(|wpisy|{
-        wpisy.borrow_mut().push(wpis)
+fn dodaj_wpis(wpis: String) {
+    WPISY.with(|wpisy| {
+        if wpis.is_empty() {
+            panic!("Wpis nie może być pusty!");
+        } 
+        else {
+            wpisy.borrow_mut().push(wpis);
+        }
     });
 }
+
 
 #[ic_cdk::query]
 fn odczytaj_wpisy() -> Vec<String> {
@@ -36,6 +43,11 @@ fn edytuj_wpis(id_wpisu: usize, nowy_wpis: String){
         let mut binding = wpisy.borrow_mut();
         let wpis = binding.get_mut(id_wpisu);
         let stary_wpis = wpis.unwrap();
-        *stary_wpis = nowy_wpis;
+        if nowy_wpis.is_empty() && id_wpisu < 0{
+            panic!("Te pole nie może być puste")
+        } 
+        else{
+            *stary_wpis = nowy_wpis;
+        }
     });
 }   
